@@ -26,7 +26,7 @@ public class Swagger {
                 .select()
                 .apis(RequestHandlerSelectors.withClassAnnotation(Api.class))
                 .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
-                .paths(PathSelectors.any())
+//                .paths(PathSelectors.any())
                 .build();
     }
 

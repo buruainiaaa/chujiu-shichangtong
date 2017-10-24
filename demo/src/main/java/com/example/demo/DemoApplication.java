@@ -13,19 +13,19 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 
 @SpringBootApplication
-@EnableWebMvc
+//@EnableWebMvc
 @MapperScan(basePackages="com.example.demo.mapper")
-public class DemoApplication extends WebMvcConfigurerAdapter implements CommandLineRunner{
+public class DemoApplication {
 	private Logger logger = LoggerFactory.getLogger(DemoApplication.class);
 	
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
 	}
 	
-	@Override
-    public void run(String... args) throws Exception {
-        logger.info("服务启动完成!");
-    }
+//	@Override
+//    public void run(String... args) throws Exception {
+//        logger.info("服务启动完成!");
+//    }
 
 //    @RequestMapping("/")
 //    String home() {

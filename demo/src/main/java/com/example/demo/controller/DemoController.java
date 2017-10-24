@@ -23,7 +23,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 
 @Controller
-@Api(description = "DemoController", tags = "测试集成")
+@Api(description = "测试集成", tags = "DemoController")
 @RequestMapping("/")
 public class DemoController {
 	
