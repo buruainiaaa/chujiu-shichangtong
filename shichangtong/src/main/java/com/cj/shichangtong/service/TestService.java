@@ -48,7 +48,8 @@ public class TestService {
         if (city.getPage() != null && city.getRows() != null) {
             PageHelper.startPage(city.getPage(), city.getRows());
         }
-        return testMapper.selectAll();
+        List<Test> testList=testMapper.selectAll();
+        return testList;
     }
 
     public Test getById(Integer id) {

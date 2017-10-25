@@ -10,19 +10,19 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource("config/serviceUrl.properties")
 public class ServiceUrl {
 
-	@Value("${SHYJFYJZ-${active}}")
+	@Value("${SHYJFYJZ-${spring.profiles.active}}")
 	private String SHYJFYJZ;
 
 	//客户发起企业会员资金账号开户
-	@Value("${KHFQQYHYZJZHKH-${active}}")
+	@Value("${KHFQQYHYZJZHKH-${spring.profiles.active}}")
 	private String KHFQQYHYZJZHKH;
 
 	//客户发起个人会员资金账号开户
-	@Value("${KHFQGRHYZJZHKH-${active}}")
+	@Value("${KHFQGRHYZJZHKH-${spring.profiles.active}}")
 	private String KHFQGRHYZJZHKH;
 
 	//银行卡相关
-	@Value("${YHKXG-${active}}")
+	@Value("${YHKXG-${spring.profiles.active}}")
 	private String YHKXG;
 
 	public String getSHYJFYJZ() {

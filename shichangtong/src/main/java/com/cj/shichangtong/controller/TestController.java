@@ -1,6 +1,11 @@
 package com.cj.shichangtong.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,22 +20,30 @@ import com.cj.auth.rpc.facade.authority.interfaces.IUserAuthorityFacade;
 import com.cj.auth.rpc.facade.authority.transobject.UserInfoTransfer;
 import com.cj.shichangtong.model.Test;
 import com.cj.shichangtong.reportentity.OpenAccess;
+import com.cj.shichangtong.service.SHYJFYJZ;
 import com.cj.shichangtong.service.TestService;
+import com.cj.shichangtong.util.PageModel;
 import com.cj.shichangtong.util.ResponseEntity;
 import com.cj.shichangtong.util.ResultModel;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
-@RestController
+@Controller
 @Api(description = "测试集成", tags = "DemoController")
 @RequestMapping("/test")
 public class TestController {
+	
+	@Value("${spring.datasource.url}")
+	private String jdbcUrl;
 	@Autowired
 	private TestService testService;
 	@Autowired
 	private IUserAuthorityFacade userAuthorityFacade;
+	@Autowired
+	private SHYJFYJZ shyjfyjz;
 	
 	@RequestMapping(value = "/delete/{id}")
     public ModelMap delete(@PathVariable Integer id, RedirectAttributes ra) {
@@ -47,15 +60,24 @@ public class TestController {
 		return "Hello World!";
 	}
 	
-//	@ResponseBody
-//	@RequestMapping(value="/openAccess",method=RequestMethod.POST)
-//	@ApiOperation(value="测试市场通接口",notes="测试市场通接口返回")
-//	@ApiImplicitParam(name="openAccess",value="请求信息",paramType="body",required=false)
-//	public ResultModel<OpenAccess> openAccess(@RequestBody OpenAccess openAccess){
-//		OpenAccess openAccess1= openAccess;
-//		System.out.println(openAccess1);
-//		return ResponseEntity.getSuccessModel(shyjfyjz.openAccess(openAccess));
-//	}
+	
+	@RequestMapping(value="/jspView")
+	public String JspName(String name,Model model){
+		model.addAttribute("url",jdbcUrl);
+//		ModelAndView mdv=new ModelAndView();
+//		mdv.setViewName(name);
+		return name;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/openAccess",method=RequestMethod.POST)
+	@ApiOperation(value="测试市场通接口",notes="测试市场通接口返回")
+	@ApiImplicitParam(name="openAccess",value="请求信息",paramType="body",required=false)
+	public ResultModel<OpenAccess> openAccess(@RequestBody OpenAccess openAccess){
+		OpenAccess openAccess1= openAccess;
+		System.out.println(openAccess1);
+		return ResponseEntity.getSuccessModel(shyjfyjz.openAccess(openAccess));
+	}
 	
 	@ApiOperation(value="测试DUBBO",notes="根据用户名获取用户密码")
 	@ApiImplicitParam(name="userName",value="登录账号",paramType="path",required=false)
@@ -79,10 +101,21 @@ public class TestController {
 		return ResponseEntity.getSuccessModel(testService.getById(2));
 	}
 	
-//	@ApiOperation(value="测试mybatis2",notes="测试Mybatis2")
-//	@ResponseBody
-//	@RequestMapping(value="/test-mybatis2",method=RequestMethod.GET)
-//	public ResultModel<City> getCity(){
-//		return ResponseEntity.getSuccessModel(cityService.getById(3));
-//	}
+	@ApiOperation(value="测试mybatis分页",notes="测试Mybatis分页")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name="name",value="名称查询",paramType="query",required=false),
+			@ApiImplicitParam(name="pageIndex",value="当前页",paramType="query",required=false),
+			@ApiImplicitParam(name="pageSize",value="每页显示的数据量",paramType="query",required=false)
+	})
+	@ResponseBody
+	@RequestMapping(value="/test-mybatis/page/",method=RequestMethod.GET)
+	public PageModel<Test> getTestPage(String name, Integer pageIndex,Integer pageSize){
+		Test test=new Test();
+		test.setPage(pageIndex);
+		test.setRows(pageSize);
+		test.setName(name);
+		List<Test> testList= testService.getAll(test);
+		return ResponseEntity.getSuccessPageModel(testList);
+	}
+	
 }

@@ -1,6 +1,12 @@
 package com.cj.shichangtong.util;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+
 import java.util.List;
+
+import org.hamcrest.text.IsEmptyString;
+
+import com.github.pagehelper.Page;
 
 import io.swagger.annotations.ApiModelProperty;
 
@@ -24,6 +30,30 @@ public class ResponseEntity {
 		pageModel.setPageSize(pageSize);
 		pageModel.setTotalPage(totalPage);
 		pageModel.setTotalSize(totalSize);
+		return pageModel;
+	}
+	
+	/**
+	 * 查询分页数据查询成功对象模型(无需分页信息，需要Pagehelper插件查询后的List结果集，实现自动读取分页数据)
+	 * @param list  数据集合
+	 * @param pageIndex   当前页
+	 * @param pageSize	  每页显示的数据总数
+	 * @param totalPage  总页数
+	 * @param totalSize  数据总条数
+	 * @return
+	 */
+	public static <T> PageModel getSuccessPageModel(List<T> list){
+		PageModel<T> pageModel=new PageModel<>();
+		pageModel.setCode("200");
+		pageModel.setMsg("操作成功！");
+		if (list instanceof Page) {
+			Page<T> new_name = (Page<T>) list;
+			pageModel.setPageIndex(new_name.getPageNum());
+			pageModel.setResultDate(list);
+			pageModel.setPageSize(new_name.getPageSize());
+			pageModel.setTotalPage(new_name.getPages());
+			pageModel.setTotalSize((int)new_name.getTotal());
+		}
 		return pageModel;
 	}
 	

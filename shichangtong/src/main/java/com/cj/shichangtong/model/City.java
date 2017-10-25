@@ -3,21 +3,12 @@ package com.cj.shichangtong.model;
 import javax.persistence.*;
 
 public class City extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     private String name;
 
     private String state;
 
 
-    /**
-     * @param id
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     /**
      * @return name

@@ -2,29 +2,15 @@ package com.cj.shichangtong.model;
 
 import javax.persistence.*;
 
-public class Test  extends BaseEntity{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class Test extends BaseEntity{
+    
 
     private String name;
 
     @Column(name = "test_name")
     private String testName;
 
-    /**
-     * @return id
-     */
-    public Integer getId() {
-        return id;
-    }
-
-    /**
-     * @param id
-     */
-    public void setId(Integer id) {
-        this.id = id;
-    }
+   
 
     /**
      * @return name
