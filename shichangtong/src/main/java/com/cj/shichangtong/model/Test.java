@@ -2,8 +2,8 @@ package com.cj.shichangtong.model;
 
 import javax.persistence.*;
 
-public class Test extends BaseEntity{
-    
+public class Test extends BaseEntity {
+   
 
     private String name;
 
@@ -11,7 +11,6 @@ public class Test extends BaseEntity{
     private String testName;
 
    
-
     /**
      * @return name
      */
