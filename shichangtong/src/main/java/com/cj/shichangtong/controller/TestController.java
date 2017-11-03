@@ -2,6 +2,8 @@ package com.cj.shichangtong.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -22,6 +24,7 @@ import com.cj.shichangtong.model.Test;
 import com.cj.shichangtong.reportentity.OpenAccess;
 import com.cj.shichangtong.service.SHYJFYJZ;
 import com.cj.shichangtong.service.TestService;
+import com.cj.shichangtong.util.InterfaceLogUtil;
 import com.cj.shichangtong.util.PageModel;
 import com.cj.shichangtong.util.ResponseEntity;
 import com.cj.shichangtong.util.ResultModel;
@@ -35,6 +38,9 @@ import io.swagger.annotations.ApiOperation;
 @Api(description = "测试集成", tags = "DemoController")
 @RequestMapping("/test")
 public class TestController {
+	
+	
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Value("${spring.datasource.url}")
 	private String jdbcUrl;
