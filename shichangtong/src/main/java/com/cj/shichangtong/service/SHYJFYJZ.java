@@ -68,6 +68,8 @@ public class SHYJFYJZ {
 		json.put("funcionID", "880002");// 交易代码
 		json.put("serialNo", grOpenAccess.getSerialNo());// 业务流水
 		json.put("merNo", serviceUrl.getMerNo());// 商户编号
+		json.put("rebackUrl", grOpenAccess.getRebackUrl());// 商户返回Url
+		json.put("notifyUrl", grOpenAccess.getNotifyUrl());// 回调Url
 
 		json.put("CustNo", grOpenAccess.getCustNo());// 用户代码
 		json.put("CustName", grOpenAccess.getCustName());// 用户姓名

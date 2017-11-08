@@ -1,5 +1,7 @@
 package com.cj.shichangtong.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
 import com.cj.shichangtong.reportentity.GROpenAccess;
+import com.cj.shichangtong.reportentity.GROpenAccessResult;
 import com.cj.shichangtong.reportentity.OpenAccess;
 import com.cj.shichangtong.service.SHYJFYJZ;
 import com.cj.shichangtong.util.ResponseEntity;
@@ -22,6 +26,8 @@ import io.swagger.annotations.ApiOperation;
 @Api(description = "市场通接口", tags = "ShiChangTong")
 @RequestMapping("/ShiChangTong")
 public class ShiChangTongController {
+
+	private static final Logger log = LoggerFactory.getLogger(ShiChangTongController.class);
 
 	@Autowired
 	private SHYJFYJZ shyjfyjz;
@@ -52,6 +58,35 @@ public class ShiChangTongController {
 	public ResultModel<String> dskh(@RequestBody GROpenAccess p_GROpenAccess) {
 		GROpenAccess openAccess1 = p_GROpenAccess;
 		return ResponseEntity.getSuccessModel(shyjfyjz.GROpenAccess(openAccess1));
+	}
+
+	/**
+	 * （回调）客户发起个人会员资金账户开户
+	 * 
+	 * @param openAccess
+	 *            报文对象
+	 * @return
+	 */
+	@RequestMapping(value = "/notifyUrl_dskh", method = RequestMethod.POST)
+	@ApiOperation(value = "（回调）客户发起个人会员资金账户开户", notes = "（回调）客户发起个人会员资金账户开户")
+	public ResultModel<String> notifyResuleDskh(@RequestBody GROpenAccessResult p_GROpenAccessResult) {
+		log.info("*******************回调成功************************");
+		System.out.println(JSON.toJSON(p_GROpenAccessResult));
+		return ResponseEntity.getSuccessModel(JSON.toJSON(p_GROpenAccessResult));
+	}
+
+	/**
+	 * （回跳）客户发起个人会员资金账户开户
+	 * 
+	 * @param openAccess
+	 *            报文对象
+	 * @return
+	 */
+	@RequestMapping(value = "/rebackUrl_dskh", method = RequestMethod.GET)
+	@ApiOperation(value = "（回跳）客户发起个人会员资金账户开户", notes = "（回调）客户发起个人会员资金账户开户")
+	public ResultModel<String> rebackResultDskh() {
+		// System.out.println(JSON.toJSON(p_GROpenAccessResult));
+		return ResponseEntity.getSuccessModel("*******************************************");
 	}
 
 	/**
