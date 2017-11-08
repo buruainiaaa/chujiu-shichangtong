@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.cj.shichangtong.conf.ServiceUrl;
 import com.cj.shichangtong.reportentity.OpenAccess;
+import com.cj.shichangtong.sign.SignConfig;
 import com.cj.shichangtong.util.BankCasignUtil;
 import com.cj.shichangtong.util.DateUtils;
 import com.cj.shichangtong.util.HttpClientUtil;
@@ -24,6 +25,9 @@ import net.sf.json.JSONObject;
 public class SHYJFYJZ {
 	@Autowired
 	private ServiceUrl serviceUrl;
+
+	@Autowired
+	private SignConfig signConfig;
 
 	/**
 	 * 
@@ -64,13 +68,15 @@ public class SHYJFYJZ {
 		json.put("funcionID", "880002");// 交易代码
 		json.put("serialNo", grOpenAccess.getSerialNo());// 业务流水
 		json.put("merNo", serviceUrl.getMerNo());// 商户编号
-		json.put("casign", BankCasignUtil.getHuiFengSign());// 签名字段
 
 		json.put("CustNo", grOpenAccess.getCustNo());// 用户代码
 		json.put("CustName", grOpenAccess.getCustName());// 用户姓名
 		json.put("CertType", grOpenAccess.getCertType());// 证件类型 1-身份证
 		json.put("CertNo", grOpenAccess.getCertNo());// 固定为身份证号码
 		json.put("MobileNo", grOpenAccess.getMobileNo());// 手机号码
+		String caSign = BankCasignUtil.getHuiFengSign(json.toString());
+		json.put("casign", caSign);// 签名字段
+		String pwd = signConfig.getPasswordpfx0();
 		return HttpClientUtil.post(json, serviceUrl.getDSKH());
 	}
 
@@ -95,9 +101,11 @@ public class SHYJFYJZ {
 		json.put("funcionID", funcionID);// 交易代码
 		json.put("serialNo", serialNo);// 业务流水
 		json.put("merNo", serviceUrl.getMerNo());// 商户编号
-		json.put("casign", BankCasignUtil.getHuiFengSign());// 签名字段
 
 		json.put("SubAcctNo", subAcctNo);// 资金账号
+
+		String caSign = BankCasignUtil.getHuiFengSign(json.toString());
+		json.put("casign", caSign);// 签名字段
 		return HttpClientUtil.post(json, serviceUrl.getDGBD());
 	}
 

@@ -1,5 +1,7 @@
 package com.cj.shichangtong.util;
 
+import com.cj.shichangtong.sign.SignMerchant;
+
 /**
  * 银行对接签名帮助类
  * 
@@ -20,7 +22,9 @@ public class BankCasignUtil {
 	 * @exception @since
 	 *                1.0.0
 	 */
-	public static String getHuiFengSign() {
-		return "1";
+	public static String getHuiFengSign(String signJson) {
+		SignMerchant sign = new SignMerchant();
+		String string = sign.signMerchant(signJson);
+		return string;
 	}
 }
