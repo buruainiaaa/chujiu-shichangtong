@@ -16,13 +16,19 @@ public class OpenAccess extends BaseReport {
 	private String custNo;// 企业代码
 	@ApiModelProperty(value = "企业名称", required = false)
 	private String custName;// 企业名称
-	@ApiModelProperty(value = "企业证件类型", required = false)
+	@ApiModelProperty(value = "企业证件类型 B-营业执照 C-社会统一认证码", required = false)
 	private String certType;// 企业证件类型
 	@ApiModelProperty(value = "企业证件号码", required = false)
 	private String certNo;// 企业证件号码
+	@ApiModelProperty(value = "经办人姓名", required = false)
+	private String orgAgentName;// 经办人姓名
+	@ApiModelProperty(value = "经办人手机号", required = false)
+	private String orgAgentMobile;// 经办人手机号
+	@ApiModelProperty(value = "经办人证件号码", required = false)
+	private String orgAgentCertNo;// 经办人证件号码
 	@ApiModelProperty(value = "法人代表", required = false)
 	private String legalRealName;// 法人代表
-	@ApiModelProperty(value = "法人证件类型", required = false)
+	@ApiModelProperty(value = "法人证件类型 1-身份证", required = false)
 	private String legalCertType;// 法人证件类型
 	@ApiModelProperty(value = "法人证件号码", required = false)
 	private String legalCertNo;// 法人证件号码
@@ -83,11 +89,36 @@ public class OpenAccess extends BaseReport {
 		this.legalCertNo = legalCertNo;
 	}
 
+	public String getOrgAgentName() {
+		return orgAgentName;
+	}
+
+	public void setOrgAgentName(String orgAgentName) {
+		this.orgAgentName = orgAgentName;
+	}
+
+	public String getOrgAgentMobile() {
+		return orgAgentMobile;
+	}
+
+	public void setOrgAgentMobile(String orgAgentMobile) {
+		this.orgAgentMobile = orgAgentMobile;
+	}
+
+	public String getOrgAgentCertNo() {
+		return orgAgentCertNo;
+	}
+
+	public void setOrgAgentCertNo(String orgAgentCertNo) {
+		this.orgAgentCertNo = orgAgentCertNo;
+	}
+
 	@Override
 	public String toString() {
 		return "OpenAccess [custNo=" + custNo + ", custName=" + custName + ", certType=" + certType + ", certNo="
-				+ certNo + ", legalRealName=" + legalRealName + ", legalCertType=" + legalCertType + ", legalCertNo="
-				+ legalCertNo + "]";
+				+ certNo + ", orgAgentName=" + orgAgentName + ", orgAgentMobile=" + orgAgentMobile + ", orgAgentCertNo="
+				+ orgAgentCertNo + ", legalRealName=" + legalRealName + ", legalCertType=" + legalCertType
+				+ ", legalCertNo=" + legalCertNo + "]";
 	}
 
 }

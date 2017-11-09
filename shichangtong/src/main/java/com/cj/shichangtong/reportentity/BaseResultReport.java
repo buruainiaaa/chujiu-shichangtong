@@ -4,7 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * 应答公共报文头
+ * 应答公共报文头（收银台模式第一次请求的响应报文头）
  * 
  * BaseResultReport
  * 
@@ -13,7 +13,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @version 1.0.0
  *
  */
-@ApiModel("响应公共报文头")
+@ApiModel("收银台模式第一次请求的响应报文头")
 public class BaseResultReport {
 
 	@ApiModelProperty(value = "响应码", required = true)
@@ -21,11 +21,11 @@ public class BaseResultReport {
 	@ApiModelProperty(value = "响应信息", required = true)
 	private String respMsg;// 响应信息
 	@ApiModelProperty(value = "渠道流水号", required = true)
-	private String ebsSerialNo;// 渠道流水号
+	private String serialNo;// 渠道流水号
 	@ApiModelProperty(value = "签名字段", required = true)
 	private String casign;// 签名字段
 	@ApiModelProperty(value = "注册token", required = true)
-	private String auhToken;// 注册token
+	private String authToken;// 注册token
 	@ApiModelProperty(value = "页面跳转url", required = true)
 	private String authUrl;// 页面跳转url
 
@@ -45,12 +45,12 @@ public class BaseResultReport {
 		this.respMsg = respMsg;
 	}
 
-	public String getEbsSerialNo() {
-		return ebsSerialNo;
+	public String getSerialNo() {
+		return serialNo;
 	}
 
-	public void setEbsSerialNo(String ebsSerialNo) {
-		this.ebsSerialNo = ebsSerialNo;
+	public void setSerialNo(String serialNo) {
+		this.serialNo = serialNo;
 	}
 
 	public String getCasign() {
@@ -61,12 +61,12 @@ public class BaseResultReport {
 		this.casign = casign;
 	}
 
-	public String getAuhToken() {
-		return auhToken;
+	public String getAuthToken() {
+		return authToken;
 	}
 
-	public void setAuhToken(String auhToken) {
-		this.auhToken = auhToken;
+	public void setAuthToken(String authToken) {
+		this.authToken = authToken;
 	}
 
 	public String getAuthUrl() {
@@ -79,8 +79,8 @@ public class BaseResultReport {
 
 	@Override
 	public String toString() {
-		return "BaseResultReport [respCode=" + respCode + ", respMsg=" + respMsg + ", ebsSerialNo=" + ebsSerialNo
-				+ ", casign=" + casign + ", auhToken=" + auhToken + ", authUrl=" + authUrl + "]";
+		return "BaseResultReport [respCode=" + respCode + ", respMsg=" + respMsg + ", serialNo=" + serialNo
+				+ ", casign=" + casign + ", authToken=" + authToken + ", authUrl=" + authUrl + "]";
 	}
 
 }

@@ -64,7 +64,7 @@ public class DateUtils {
 	 * 
 	 * @param date
 	 *            时间
-	 * @return yyyyMMdd格式的时间
+	 * @return HHmmss格式的时间
 	 */
 	public static String formatTime(Date date) {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HHmmss");

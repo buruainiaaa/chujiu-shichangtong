@@ -24,47 +24,46 @@
 
 package com.cj.shichangtong.service;
 
-import com.cj.shichangtong.mapper.CityMapper;
-import com.cj.shichangtong.mapper.TestMapper;
-import com.cj.shichangtong.model.City;
-import com.cj.shichangtong.model.Test;
-import com.github.pagehelper.PageHelper;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.cj.shichangtong.mapper.TestMapper;
+import com.cj.shichangtong.model.Test;
+import com.github.pagehelper.PageHelper;
 
 /**
- * @author liuzh
- * @since 2015-12-19 11:09
+ * @author
+ * @since
  */
 @Service
 public class TestService {
 
-    @Autowired
-    private TestMapper testMapper;
+	@Autowired
+	private TestMapper testMapper;
 
-    public List<Test> getAll(Test city) {
-        if (city.getPage() != null && city.getRows() != null) {
-            PageHelper.startPage(city.getPage(), city.getRows());
-        }
-        List<Test> testList=testMapper.selectAll();
-        return testList;
-    }
+	public List<Test> getAll(Test city) {
+		if (city.getPage() != null && city.getRows() != null) {
+			PageHelper.startPage(city.getPage(), city.getRows());
+		}
+		List<Test> testList = testMapper.selectAll();
+		return testList;
+	}
 
-    public Test getById(Integer id) {
-        return testMapper.selectByPrimaryKey(id);
-    }
+	public Test getById(Integer id) {
+		return testMapper.selectByPrimaryKey(id);
+	}
 
-    public void deleteById(Integer id) {
-    	testMapper.deleteByPrimaryKey(id);
-    }
+	public void deleteById(Integer id) {
+		testMapper.deleteByPrimaryKey(id);
+	}
 
-    public void save(Test country) {
-        if (country.getId() != null) {
-        	testMapper.updateByPrimaryKey(country);
-        } else {
-        	testMapper.insert(country);
-        }
-    }
+	public void save(Test country) {
+		if (country.getId() != null) {
+			testMapper.updateByPrimaryKey(country);
+		} else {
+			testMapper.insert(country);
+		}
+	}
 }
