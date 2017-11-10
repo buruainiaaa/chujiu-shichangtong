@@ -1,11 +1,17 @@
 package com.cj.shichangtong.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.alibaba.fastjson.JSON;
+import com.cj.shichangtong.reportentity.BankFileGenNotice;
 import com.cj.shichangtong.reportentity.BaseResultReport2;
 import com.cj.shichangtong.reportentity.BindCardResult;
 import com.cj.shichangtong.reportentity.FundChangeNotice;
+import com.cj.shichangtong.reportentity.FundOutResult;
 import com.cj.shichangtong.reportentity.GROpenAccessResult;
 import com.cj.shichangtong.reportentity.ModifyMobile;
+import com.cj.shichangtong.sign.SignConfig;
+import com.cj.shichangtong.util.BankCasignUtil;
 import com.cj.shichangtong.util.InterfaceLogUtil;
 
 /**
@@ -20,6 +26,9 @@ import com.cj.shichangtong.util.InterfaceLogUtil;
  */
 @org.springframework.stereotype.Service
 public class NotifyResultService {
+
+	@Autowired
+	private SignConfig signConfig;
 
 	/**
 	 * 开户回调 openAccess
@@ -132,8 +141,8 @@ public class NotifyResultService {
 	 */
 	public void unbundlingCard(String reportString) throws Exception {
 		InterfaceLogUtil.writeInfo("银行卡解绑请求完成，报文：" + reportString);
-		ModifyMobile modifyMobile = JSON.parseObject(reportString, ModifyMobile.class);
-		if (modifyMobile == null || !"000000".equals(modifyMobile.getRespCode())) {
+		BaseResultReport2 baseResultReport2 = JSON.parseObject(reportString, BaseResultReport2.class);
+		if (baseResultReport2 == null || !"000000".equals(baseResultReport2.getRespCode())) {
 			InterfaceLogUtil.writeError("银行卡解绑失败，详情请查看日志！");
 			throw new Exception("银行卡解绑失败，详情请查看日志！");
 		}
@@ -169,13 +178,98 @@ public class NotifyResultService {
 	 * @exception @since
 	 *                1.0.0
 	 */
-	public void fundChangeNotice(String reportString) throws Exception {
+	public String fundChangeNotice(String reportString) throws Exception {
 		InterfaceLogUtil.writeInfo("资金变动提醒完成，报文：" + reportString);
+		// 1、反序列化
 		FundChangeNotice fundChangeNotice = JSON.parseObject(reportString, FundChangeNotice.class);
+		// 2、判断报文是否正常
 		if (fundChangeNotice == null) {
 			InterfaceLogUtil.writeError("资金变动提醒失败，详情请查看日志！");
 			throw new Exception("资金变动提醒失败，详情请查看日志！");
 		}
+		// 3、验签
+		String casign = fundChangeNotice.getCasign();
+		fundChangeNotice.setCasign(null);
+		String respJson = JSON.toJSONString(fundChangeNotice);
+		boolean bool = BankCasignUtil.vertifyForCert(respJson, casign, signConfig.getTruststore0());
+		if (!bool) {
+			InterfaceLogUtil.writeError("验签失败，报文！" + reportString);
+			throw new Exception("验签失败！");
+		}
+
+		// 4、返回通知给银行
+		net.sf.json.JSONObject jsonObject = new net.sf.json.JSONObject();
+		jsonObject.put("respCode", "000000");
+		jsonObject.put("respMsg", "交易成功");
+		jsonObject.put("serialNo", fundChangeNotice.getSerialNo());
+		jsonObject.put("SubAcctNo", fundChangeNotice.getSubAcctNo());
+		jsonObject.put("funcionID", fundChangeNotice.getFuncionID());
+		jsonObject.put("merNo", fundChangeNotice.getMerNo());
+		jsonObject.put("OrderNo", fundChangeNotice.getOrderNo());
+
+		String caSign = BankCasignUtil.getHuiFengSign(jsonObject.toString());
+		jsonObject.put("casign", caSign);// 签名字段
+		return jsonObject.toString();
+		// TODO 数据库相关操作
+	}
+
+	/**
+	 * 客户提现出金回调
+	 * 
+	 * @param reportString
+	 * 
+	 * @throws Exception
+	 * @exception @since
+	 *                1.0.0
+	 */
+	public void fundOut(String reportString) throws Exception {
+		InterfaceLogUtil.writeInfo("客户提现出金回调请求完成，报文：" + reportString);
+		FundOutResult fundOutResult = JSON.parseObject(reportString, FundOutResult.class);
+		if (fundOutResult == null || !"000000".equals(fundOutResult.getRespCode())) {
+			InterfaceLogUtil.writeError("客户提现出金回调失败，详情请查看日志！");
+			throw new Exception("客户提现出金回调失败，详情请查看日志！");
+		}
+		// TODO 数据库相关操作
+	}
+
+	/**
+	 * 银行文件生成提醒
+	 * 
+	 * @param reportString
+	 * 
+	 * @throws Exception
+	 * @exception @since
+	 *                1.0.0
+	 */
+	public String fileGenNotice(String reportString) throws Exception {
+		InterfaceLogUtil.writeInfo("银行文件生成完成，请下载，报文：" + reportString);
+		// 1、反序列化
+		BankFileGenNotice bankFileGenNotice = JSON.parseObject(reportString, BankFileGenNotice.class);
+		// 2、判断报文是否正常
+		if (bankFileGenNotice == null) {
+			InterfaceLogUtil.writeError("银行文件生成通知失败，详情请查看日志！");
+			throw new Exception("银行文件生成通知失败，详情请查看日志！");
+		}
+		// 3、验签
+		String casign = bankFileGenNotice.getCasign();
+		bankFileGenNotice.setCasign(null);
+		String respJson = JSON.toJSONString(bankFileGenNotice);
+		boolean bool = BankCasignUtil.vertifyForCert(respJson, casign, signConfig.getTruststore0());
+		if (!bool) {
+			InterfaceLogUtil.writeError("验签失败，报文！" + reportString);
+			throw new Exception("验签失败！");
+		}
+
+		// 4、返回通知给银行
+		net.sf.json.JSONObject jsonObject = new net.sf.json.JSONObject();
+		jsonObject.put("respCode", "000000");
+		jsonObject.put("respMsg", "交易成功");
+		jsonObject.put("funcionID", bankFileGenNotice.getFuncionID());
+		jsonObject.put("merNo", bankFileGenNotice.getMerNo());
+
+		String caSign = BankCasignUtil.getHuiFengSign(jsonObject.toString());
+		jsonObject.put("casign", caSign);// 签名字段
+		return jsonObject.toString();
 		// TODO 数据库相关操作
 	}
 

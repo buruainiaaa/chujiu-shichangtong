@@ -1,6 +1,6 @@
 package com.cj.shichangtong.sign;
 
-import com.alibaba.fastjson.JSON;
+import com.cj.shichangtong.util.InterfaceLogUtil;
 import com.hundsun.epay.util.SignAndVerify;
 
 /**
@@ -19,8 +19,8 @@ public class SignSCT {
 	 * 
 	 * @param resp
 	 *            JSON串
-	 * @param privateCertPath
-	 *            私钥地址
+	 * @param caSign
+	 *            签名串
 	 * @param pub
 	 *            公钥地址
 	 * @param pwd
@@ -29,17 +29,17 @@ public class SignSCT {
 	 * @exception @since
 	 *                1.0.0
 	 */
-	public boolean signSct(String resp, String privateCertPath, String pub, String pwd) {
+	public boolean signSct(String resp, String caSign, String pub) {
 		try {
-			String respJson = JSON.toJSONString(resp);
 			/* 获取私钥证书地址 */
 			/* 获取私钥证书密码 */
-			String sign = SignAndVerify.sign(respJson, privateCertPath, pwd);
-			System.out.println(sign);
-			boolean bool = SignAndVerify.vertifyForCert(respJson, sign, pub);
+			// String sign = SignAndVerify.sign(respJson, privateCertPath, pwd);
+			// System.out.println(sign);
+			boolean bool = SignAndVerify.vertifyForCert(resp, caSign, pub);
 			return bool;
 
 		} catch (Exception e) {
+			InterfaceLogUtil.writeError("验签失败：" + e.getMessage());
 			e.printStackTrace();
 			return false;
 		}

@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cj.shichangtong.conf.ServiceUrl;
+import com.cj.shichangtong.reportentity.BankFileGenNotice;
+import com.cj.shichangtong.reportentity.FundOut;
 import com.cj.shichangtong.reportentity.OpenAccess;
 import com.cj.shichangtong.sign.SignConfig;
 import com.cj.shichangtong.util.BankCasignUtil;
@@ -96,11 +98,16 @@ public class SHYJFYJZ {
 	 * 客户发起企业资金账户冻结 880014， 客户发起个人资金账户解冻 880015， 客户发起企业资金账户解冻 880016，
 	 * 客户发起个人资金账户交易密码重置 880017， 客户发起企业资金账户交易密码重置 880018， AccessManagement
 	 * 
-	 * @param serialNo 业务流水
-	 * @param subAcctNo 资金账号
-	 * @param funcionID 服务ID
-	 * @param rebackUrl 前台页面回跳地址
-	 * @param notifyUrl 后台服务回调通知地址
+	 * @param serialNo
+	 *            业务流水
+	 * @param subAcctNo
+	 *            资金账号
+	 * @param funcionID
+	 *            服务ID
+	 * @param rebackUrl
+	 *            前台页面回跳地址
+	 * @param notifyUrl
+	 *            后台服务回调通知地址
 	 * @return String
 	 * @exception @since
 	 *                1.0.0
@@ -121,6 +128,53 @@ public class SHYJFYJZ {
 		String caSign = BankCasignUtil.getHuiFengSign(json.toString());
 		json.put("casign", caSign);// 签名字段
 		return HttpClientUtil.post(json, serviceUrl.getDGBD());
+	}
+
+	/**
+	 * 客户提现出金 fundOut
+	 * 
+	 * @param out
+	 * @return String
+	 * @exception @since
+	 *                1.0.0
+	 */
+	public String fundOut(FundOut out) {
+		JSONObject json = new JSONObject();
+		json.put("bizDate", DateUtils.formatDate(new Date()));// 业务日期
+		json.put("bizTime", DateUtils.formatTime(new Date()));// 业务时间
+		json.put("funcionID", "880009");// 交易代码
+		json.put("serialNo", out.getSerialNo());// 业务流水
+		json.put("merNo", serviceUrl.getMerNo());// 商户编号
+		json.put("rebackUrl", out.getRebackUrl());// 商户返回Url
+		json.put("notifyUrl", out.getNotifyUrl());// 回调Url
+
+		json.put("SubAcctNo", out.getSubAcctNo());//
+		json.put("OperFlag", out.getOperFlag());//
+		json.put("Amount", out.getAmount());//
+		json.put("FeeList", out.getFeeList());//
+
+		String caSign = BankCasignUtil.getHuiFengSign(json.toString());
+		json.put("casign", caSign);// 签名字段
+		return HttpClientUtil.post(json, serviceUrl.getTXCJ());
+	}
+
+	public String merFileGeneratorNotice(BankFileGenNotice bankFileGenNotice) {
+		JSONObject json = new JSONObject();
+		json.put("bizDate", DateUtils.formatDate(new Date()));// 业务日期
+		json.put("bizTime", DateUtils.formatTime(new Date()));// 业务时间
+		json.put("funcionID", "890039");// 交易代码
+		json.put("serialNo", bankFileGenNotice.getSerialNo());// 业务流水
+		json.put("merNo", serviceUrl.getMerNo());// 商户编号
+
+		json.put("FileName", bankFileGenNotice.getFileName());//
+		json.put("NoticeDate", bankFileGenNotice.getNoticeDate());//
+		json.put("FileFlag", bankFileGenNotice.getFileFlag());//
+		json.put("RecordNum", bankFileGenNotice.getRecordNum());//
+
+		String caSign = BankCasignUtil.getHuiFengSign(json.toString());
+		json.put("casign", caSign);// 签名字段
+		return HttpClientUtil.post(json, serviceUrl.getWJSCTZ());
+
 	}
 
 }

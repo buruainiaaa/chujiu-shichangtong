@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel("资金变动通知 报文模型")
-public class FundChangeNotice {
+public class FundChangeNotice extends BaseReport {
 
 	@ApiModelProperty(value = "资金账号", required = true)
 	@JSONField(name = "SubAcctNo")

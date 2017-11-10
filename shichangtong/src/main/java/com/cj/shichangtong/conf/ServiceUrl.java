@@ -50,6 +50,18 @@ public class ServiceUrl {
 	@Value("${GRMMXG-${spring.profiles.active}}")
 	private String GRMMXG;
 
+	// 客户资金账户提现出金
+	@Value("${TXCJ-${spring.profiles.active}}")
+	private String TXCJ;
+
+	// 客户发起个人资金账户交易密码修改
+	@Value("${RZDZ-${spring.profiles.active}}")
+	private String RZDZ;
+
+	// 商户文件生成提醒
+	@Value("${WJSCTZ-${spring.profiles.active}}")
+	private String WJSCTZ;
+
 	public String getMerNo() {
 		return merNo;
 	}
@@ -136,6 +148,38 @@ public class ServiceUrl {
 
 	public void setGRMMXG(String gRMMXG) {
 		GRMMXG = gRMMXG;
+	}
+
+	public String getTXCJ() {
+		return TXCJ;
+	}
+
+	public void setTXCJ(String tXCJ) {
+		TXCJ = tXCJ;
+	}
+
+	public String getRZDZ() {
+		return RZDZ;
+	}
+
+	public void setRZDZ(String rZDZ) {
+		RZDZ = rZDZ;
+	}
+
+	public String getWJSCTZ() {
+		return WJSCTZ;
+	}
+
+	public void setWJSCTZ(String wJSCTZ) {
+		WJSCTZ = wJSCTZ;
+	}
+
+	@Override
+	public String toString() {
+		return "ServiceUrl [merNo=" + merNo + ", SHYJFYJZ=" + SHYJFYJZ + ", KHFQQYHYZJZHKH=" + KHFQQYHYZJZHKH
+				+ ", KHFQGRHYZJZHKH=" + KHFQGRHYZJZHKH + ", YHKXG=" + YHKXG + ", DGKH=" + DGKH + ", DGBD=" + DGBD
+				+ ", DSKH=" + DSKH + ", DSBD=" + DSBD + ", QYMMXG=" + QYMMXG + ", GRMMXG=" + GRMMXG + ", TXCJ=" + TXCJ
+				+ ", RZDZ=" + RZDZ + ", WJSCTZ=" + WJSCTZ + "]";
 	}
 
 }
