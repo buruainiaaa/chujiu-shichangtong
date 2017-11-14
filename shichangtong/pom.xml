@@ -250,7 +250,6 @@
     	<artifactId>CtrlDecrypt-jdk14-v1.0</artifactId>
    	 	<version>1.0</version>
 	</dependency>
-    
     <dependency>
     	<groupId>encpasswd</groupId>
     	<artifactId>encpasswd</artifactId>
@@ -276,6 +275,14 @@
     	<artifactId>ISFJ_v2_0_1_127_3_BAISC_JDK14</artifactId>
    	 	<version>1.0</version>
 	</dependency>
+	<!-- 	SFTP -->
+	<dependency>
+   		 <groupId>com.jcraft</groupId>
+   		 <artifactId>jsch</artifactId>
+    	 <version>0.1.53</version>
+	</dependency>
+	
+	
     </dependencies>
     
     <build>

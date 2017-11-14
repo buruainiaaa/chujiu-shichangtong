@@ -13,9 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.cj.shichangtong.reportentity.BaseResultReport;
+import com.cj.shichangtong.reportentity.EndDayTransaction;
+import com.cj.shichangtong.reportentity.EndDayTransactionResult;
 import com.cj.shichangtong.reportentity.FundOut;
+import com.cj.shichangtong.reportentity.FundOutQuery;
 import com.cj.shichangtong.service.NotifyResultService;
 import com.cj.shichangtong.service.SHYJFYJZ;
 import com.cj.shichangtong.util.MyRequestWrapper;
@@ -99,4 +103,55 @@ public class FundTypeRequestController {
 		// System.out.println(JSON.toJSON(p_GROpenAccessResult));
 		return ResponseEntity.getSuccessModel("*********************（回跳）客户提现出金**********************");
 	}
+
+	/**
+	 * 会员资金账户提现出金申请查询 会员通过页面方式发起的提现出金申请，根据商户平台业务规则约定，若需要通过商户平台审核之后才能提现出金，
+	 * 商户平台可调用此接口向银行查询并勾选提现出金申请明细列表之后，再提交银行进行批量审批确认或拒绝处理。
+	 * 
+	 * @param openAccess
+	 *            报文对象
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/fund_out_query", method = RequestMethod.POST)
+	@ApiOperation(value = "商户日终对账", notes = "商户日终对账")
+	public ResultModel<String> fundOutQuery(@RequestBody FundOutQuery fundOutQuery) throws IOException {
+
+		// 1、请求报文
+		// String resultStr = shyjfyjz.endDayTransaction(fundOutQuery);
+		// // 2、反序列化
+		// EndDayTransactionResult resultReport =
+		// JSONObject.parseObject(resultStr, EndDayTransactionResult.class);
+		// // 3、报文结果判断
+		// if (resultReport != null) {
+		// return
+		// ResponseEntity.getSuccessModel(JSON.toJSONString(resultReport));
+		// }
+		// return ResponseEntity.getFailureModel(resultStr);
+		return null;
+	}
+
+	/**
+	 * 商户日终对账
+	 * 
+	 * @param openAccess
+	 *            报文对象
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/end_day_transaction", method = RequestMethod.POST)
+	@ApiOperation(value = "商户日终对账", notes = "商户日终对账")
+	public ResultModel<String> endDayTransaction(@RequestBody EndDayTransaction endDayTransaction) throws IOException {
+
+		// 1、请求报文
+		String resultStr = shyjfyjz.endDayTransaction(endDayTransaction);
+		// 2、反序列化
+		EndDayTransactionResult resultReport = JSONObject.parseObject(resultStr, EndDayTransactionResult.class);
+		// 3、报文结果判断
+		if (resultReport != null) {
+			return ResponseEntity.getSuccessModel(JSON.toJSONString(resultReport));
+		}
+		return ResponseEntity.getFailureModel(resultStr);
+	}
+
 }

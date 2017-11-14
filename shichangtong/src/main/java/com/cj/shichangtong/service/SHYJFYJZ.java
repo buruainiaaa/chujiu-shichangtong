@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.cj.shichangtong.conf.ServiceUrl;
 import com.cj.shichangtong.reportentity.BankFileGenNotice;
+import com.cj.shichangtong.reportentity.EndDayTransaction;
 import com.cj.shichangtong.reportentity.FundOut;
 import com.cj.shichangtong.reportentity.OpenAccess;
 import com.cj.shichangtong.sign.SignConfig;
@@ -158,6 +159,14 @@ public class SHYJFYJZ {
 		return HttpClientUtil.post(json, serviceUrl.getTXCJ());
 	}
 
+	/**
+	 * 商户文件生成提醒 merFileGeneratorNotice
+	 * 
+	 * @param bankFileGenNotice
+	 * @return String
+	 * @exception @since
+	 *                1.0.0
+	 */
 	public String merFileGeneratorNotice(BankFileGenNotice bankFileGenNotice) {
 		JSONObject json = new JSONObject();
 		json.put("bizDate", DateUtils.formatDate(new Date()));// 业务日期
@@ -174,6 +183,32 @@ public class SHYJFYJZ {
 		String caSign = BankCasignUtil.getHuiFengSign(json.toString());
 		json.put("casign", caSign);// 签名字段
 		return HttpClientUtil.post(json, serviceUrl.getWJSCTZ());
+
+	}
+
+	/**
+	 * 商户日终交易 merFileGeneratorNotice
+	 * 
+	 * @param bankFileGenNotice
+	 * @return String
+	 * @exception @since
+	 *                1.0.0
+	 */
+	public String endDayTransaction(EndDayTransaction endDayTransaction) {
+		JSONObject json = new JSONObject();
+		json.put("bizDate", DateUtils.formatDate(new Date()));// 业务日期
+		json.put("bizTime", DateUtils.formatTime(new Date()));// 业务时间
+		json.put("funcionID", "890040");// 交易代码
+		json.put("serialNo", endDayTransaction.getSerialNo());// 业务流水
+		json.put("merNo", serviceUrl.getMerNo());// 商户编号
+
+		json.put("OperFlag", endDayTransaction.getOperFlag());// 操作标志
+		json.put("OperType", endDayTransaction.getOperType());// 操作方式
+		json.put("CheckDate", endDayTransaction.getCheckDate());// 对账日期
+
+		String caSign = BankCasignUtil.getHuiFengSign(json.toString());
+		json.put("casign", caSign);// 签名字段
+		return HttpClientUtil.post(json, serviceUrl.getRZDZ());
 
 	}
 

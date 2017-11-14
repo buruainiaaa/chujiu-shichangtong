@@ -7,12 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-    This is Jsp Hello World!!
-    
-    <br />
-    ${url}
-    
-    
-    <a href="/test/sftpUpload">SFTP上传页</a>
+
 </body>
 </html>
